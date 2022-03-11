@@ -8,17 +8,30 @@
 
 %%
 
-"main()" { return tMAIN; }
-"{"	{ return tAO; }
-"}"	{ return tAF; }
+main { return tMAIN; }
+if { return tIF; }
+else { return tELSE; }
+while { return tWHILE; }
+printf { return tPRINTF; }
 
-"const" { return tCONST; }
-"int" { return tINT; }
+const { return tCONST; }
+int { return tINT; }
+
+[ \t\n\r]+ {};
+
+
+[0-9]+(e[0-9]+)?	{
+	  yylval.nb = (int) strtold(yytext, NULL);
+	  return tNB;
+	}
+
 [a-zA-Z][a-zA-Z0-9_]*	{
-	  yylval.var = yytext[0];
+	  strcpy(yylval.var, yytext);
 	  return tID;
 	}
-	
+
+"{"	{ return tAO; }
+"}"	{ return tAF; }
 "="	{ return tEGAL; }
 "-"	{ return tSOU; }
 "+"	{ return tADD; }
@@ -27,25 +40,13 @@
 "("	{ return tPO; }
 ")"	{ return tPF; }
 
-" "	{ return tSPACE; }
-"\t" { return tTAB; }
 "," { return tV; }
-
-"\n" { return tFL; }
 
 ";" { return tFI;}
 
-"printf" { return tPRINTF; }
 
-[0-9]+	{
-	  yylval.nb = atoi(yytext);
-	  return tNB;
-	}
-	
-"if" { return tIF; }
-"else" { return tELSE; }
-"while" { return tWHILE; }
-
-.	{ return tERROR; }
+.	{printf("%x!!!!!!!!!!!!!!!!!!!\n",yytext[0]); return tERROR; }
 %%
 
+
+/* \n	{ return tFL; } */

@@ -38,7 +38,7 @@
 # define YY_YY_Y_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 0
+# define YYDEBUG 1
 #endif
 #if YYDEBUG
 extern int yydebug;
@@ -61,18 +61,15 @@ extern int yydebug;
     tDIV = 267,
     tPO = 268,
     tPF = 269,
-    tSPACE = 270,
-    tTAB = 271,
-    tV = 272,
-    tFL = 273,
-    tFI = 274,
-    tPRINTF = 275,
-    tIF = 276,
-    tELSE = 277,
-    tWHILE = 278,
-    tERROR = 279,
-    tNB = 280,
-    tID = 281
+    tV = 270,
+    tFI = 271,
+    tPRINTF = 272,
+    tIF = 273,
+    tELSE = 274,
+    tWHILE = 275,
+    tERROR = 276,
+    tNB = 277,
+    tID = 278
   };
 #endif
 /* Tokens.  */
@@ -88,27 +85,24 @@ extern int yydebug;
 #define tDIV 267
 #define tPO 268
 #define tPF 269
-#define tSPACE 270
-#define tTAB 271
-#define tV 272
-#define tFL 273
-#define tFI 274
-#define tPRINTF 275
-#define tIF 276
-#define tELSE 277
-#define tWHILE 278
-#define tERROR 279
-#define tNB 280
-#define tID 281
+#define tV 270
+#define tFI 271
+#define tPRINTF 272
+#define tIF 273
+#define tELSE 274
+#define tWHILE 275
+#define tERROR 276
+#define tNB 277
+#define tID 278
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
 #line 8 "compil.y"
- int nb; char var; 
+ int nb; char* var[16]; 
 
-#line 112 "y.tab.h"
+#line 106 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
