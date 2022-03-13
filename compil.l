@@ -13,10 +13,11 @@ if { return tIF; }
 else { return tELSE; }
 while { return tWHILE; }
 printf { return tPRINTF; }
-
+return { return tRETURN; }
+"else if" { return tELSEIF; }
 const { return tCONST; }
 int { return tINT; }
-
+void { return tVOID;}
 [ \t\n\r]+ {};
 
 
@@ -33,6 +34,11 @@ int { return tINT; }
 "{"	{ return tAO; }
 "}"	{ return tAF; }
 "="	{ return tEGAL; }
+"<" { return tINF ; }
+">" { return tSUP ; }
+"<=" { return tINFEGAL ; }
+">=" { return tSUPEGAL ; }
+"!=" { return tDIF ; }
 "-"	{ return tSOU; }
 "+"	{ return tADD; }
 "*"	{ return tMUL; }

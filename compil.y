@@ -6,10 +6,10 @@ void yyerror(char *s);
 %}
 
 %union { int nb; char* var[16]; }
-%token tMAIN tAO tAF tCONST tINT tEGAL tSOU tADD tMUL tDIV tPO tPF tV tFI tPRINTF tIF tELSE tWHILE tERROR
+%token tMAIN tAO tAF tCONST tINT tEGAL tSOU tADD tMUL tDIV tPO tPF tV tFI tPRINTF tIF tELSE tWHILE tERROR tRETURN tVOID tINF tSUP tSUPEGAL tINFEGAL tDIF tELSEIF
 %token <nb> tNB
 %token <var> tID
-%type <nb> Calcul DivMul Terme
+%type <nb> Calcul DivMul Terme Valeur
 %start Programme
 
 %%
@@ -19,17 +19,45 @@ Fonctions : Fonctions Main { printf("Fonctions Main\n"); }
 		| Main { printf("Main\n"); }
 		| Fonctions Fonction { printf("Fonctions Fonction\n"); }
 		| Fonction { printf("Fonction\n"); };
-Fonction : tINT tID tPO tPF tAO Body tAF { printf("Fonction %s\n",$2); };
-Main : tINT tMAIN tPO tPF tAO Body tAF { printf("Main\n"); }
-		| tMAIN tPO tPF tAO Body tAF { printf("Main\n"); };
+Fonction : tINT tID tPO ArgumentsDeclaration tPF tAO BodyRet tAF { printf("Fonction %s avec return\n",$2); }
+        | tVOID tID tPO ArgumentsDeclaration tPF tAO Body tAF { printf("Fonction %s sans return\n",$2); };
+ArgumentsDeclaration : 
+        | ListeArgumentsDeclaration;        
+ListeArgumentsDeclaration : tINT tID
+    | tINT tID tV ListeArgumentsDeclaration; 
+Main : tINT tMAIN tPO tPF tAO BodyRet tAF { printf("Main avec return\n"); }
+		| tVOID tMAIN tPO tPF tAO Body tAF { printf("Main sans return \n"); };
+Parametre : tID | tNB;
+Valeur : tID | tNB | Calcul | AppelFonction;
+BodyRet: Body tRETURN Valeur tFI { printf("Return : %d\n",$3); };
+        
 Body : 
+     
 		| Declaration Body
 		| Initialisation Body
-		| Affectation Body ;
+		| Affectation Body
+		| BrancheIf Body
+		| AppelFonction tFI Body;
 Declaration : tINT tID tFI { printf("Declaration : %s\n",$2); };
-Initialisation : tINT tID tEGAL tNB tFI { printf("Initialisation : %s = %d\n",$2,$4);};
-Affectation : tID tEGAL tNB tFI { printf("Affectation : %s = %d\n",$1,$3);}
-		| tID tEGAL Calcul tFI { printf("Affectation : %s = %d\n",$1,$3);};
+Initialisation : tINT tID tEGAL Valeur tFI { printf("Initialisation directe, par variable, par calcul ou par appel de fonction: %s = %d\n",$2,$4);};
+        
+Affectation : tID tEGAL Valeur tFI { printf("Initialisation directe, par variable, par calcul ou par appel de fonction: %s = %d\n",$1,$3);};
+
+BrancheIf : tIF tPO Condition tPF tAO Body tAF BranchesElseif BrancheElse{ printf("Branche if\n");};
+Condition : Valeur Comparateur Valeur
+        | Valeur;
+Comparateur : tEGAL | tINF | tSUP | tINFEGAL | tSUPEGAL | tDIF; 
+BrancheElse : 
+        |tELSE tAO Body tAF{ printf("Branche else\n");};     
+BranchesElseif : 
+        | tELSEIF tPO Condition tPF tAO Body tAF BranchesElseif { printf("Branche else if\n");};
+              
+AppelFonction : tID tPO Arguments tPF { printf("Appel fonction : %s\n", $1);};
+Arguments : 
+        | ListeArguments;        
+ListeArguments : Valeur
+    | Valeur tV ListeArguments;
+    
 Calcul : Calcul tADD DivMul 
 		| Calcul tSOU DivMul 
 		| DivMul  ;
@@ -38,7 +66,8 @@ DivMul :	  DivMul tMUL Terme
 		| Terme  ;
 Terme :		  tPO Calcul tPF 
 		| tID 
-		| tNB  ;
+		| tNB
+		| AppelFonction ;
 
 
 

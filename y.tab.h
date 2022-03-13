@@ -68,8 +68,16 @@ extern int yydebug;
     tELSE = 274,
     tWHILE = 275,
     tERROR = 276,
-    tNB = 277,
-    tID = 278
+    tRETURN = 277,
+    tVOID = 278,
+    tINF = 279,
+    tSUP = 280,
+    tSUPEGAL = 281,
+    tINFEGAL = 282,
+    tDIF = 283,
+    tELSEIF = 284,
+    tNB = 285,
+    tID = 286
   };
 #endif
 /* Tokens.  */
@@ -92,8 +100,16 @@ extern int yydebug;
 #define tELSE 274
 #define tWHILE 275
 #define tERROR 276
-#define tNB 277
-#define tID 278
+#define tRETURN 277
+#define tVOID 278
+#define tINF 279
+#define tSUP 280
+#define tSUPEGAL 281
+#define tINFEGAL 282
+#define tDIF 283
+#define tELSEIF 284
+#define tNB 285
+#define tID 286
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -102,7 +118,7 @@ union YYSTYPE
 #line 8 "compil.y"
  int nb; char* var[16]; 
 
-#line 106 "y.tab.h"
+#line 122 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
