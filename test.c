@@ -7,8 +7,8 @@ int main() {
     int b = 5;
     int c = f(4);
     f(4*2);
-    if(1){
-    }else if (toto < 9){
-    }else {}
+    while(i < 3) {
+        printf("azee2");
+    }
     return res;
 }

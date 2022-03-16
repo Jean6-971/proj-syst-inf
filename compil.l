@@ -14,7 +14,6 @@ else { return tELSE; }
 while { return tWHILE; }
 printf { return tPRINTF; }
 return { return tRETURN; }
-"else if" { return tELSEIF; }
 const { return tCONST; }
 int { return tINT; }
 void { return tVOID;}
@@ -30,7 +29,7 @@ void { return tVOID;}
 	  strcpy(yylval.var, yytext);
 	  return tID;
 	}
-
+"\"" { return tG; }
 "{"	{ return tAO; }
 "}"	{ return tAF; }
 "="	{ return tEGAL; }

@@ -75,7 +75,7 @@ extern int yydebug;
     tSUPEGAL = 281,
     tINFEGAL = 282,
     tDIF = 283,
-    tELSEIF = 284,
+    tG = 284,
     tNB = 285,
     tID = 286
   };
@@ -107,7 +107,7 @@ extern int yydebug;
 #define tSUPEGAL 281
 #define tINFEGAL 282
 #define tDIF 283
-#define tELSEIF 284
+#define tG 284
 #define tNB 285
 #define tID 286
 
@@ -116,7 +116,7 @@ extern int yydebug;
 union YYSTYPE
 {
 #line 8 "compil.y"
- int nb; char* var[16]; 
+ int nb; char var[16]; 
 
 #line 122 "y.tab.h"
 
