@@ -40,15 +40,16 @@ Body :
 		| BrancheWhile Body
 		| Printf Body
 		| AppelFonction tFI Body;
-Declaration : tINT tID tFI { printf("Declaration : %s\n",$2); };
-Initialisation : tINT tID tEGAL Valeur tFI { printf("Initialisation directe, par variable, par calcul ou par appel de fonction: %s = %d\n",$2,$4);};
+Declaration : tINT tID tFI { printf("Declaration : %s\n",$2), Add_symb(&TS, $2, "int", false); };
+Initialisation : tINT tID tEGAL Valeur tFI { printf("Initialisation directe, par variable, par calcul ou par appel de fonction: %s = %d\n",$2,$4), Add_symb(&TS, $2, "int", true), 
+Add_instruction(&TI, AFC, Get_addr(TS, $2), $4);};
         
-Affectation : tID tEGAL Valeur tFI { printf("Initialisation directe, par variable, par calcul ou par appel de fonction: %s = %d\n",$1,$3);};
+Affectation : tID tEGAL Valeur tFI { printf("Initialisation directe, par variable, par calcul ou par appel de fonction: %s = %d\n",$1,$3), Add_instruction(&TI, AFC, Get_addr(TS, $1), $3);};
 
-BrancheIf : tIF tPO Conditions tPF tAO Body tAF BranchesElseif { printf("Branche if\n");};
+BrancheIf : tIF tPO Conditions tPF tAO Body tAF BranchesElseif { printf("Branche if\n");}; // Incrementer la profondeur ?
 Conditions : Valeur Comparateur Valeur
         | Valeur
-		| Valeur Comparateur Valeur Conditions
+		| Valeur Comparateur Valeur Conditions {}//comparaison ??
         | Valeur Conditions;
 Comparateur : tEGAL | tINF | tSUP | tINFEGAL | tSUPEGAL | tDIF;  
 BranchesElseif : 
@@ -62,16 +63,16 @@ Arguments :
 ListeArguments : Valeur
     | Valeur tV ListeArguments;
     
-Calcul : Calcul tADD DivMul 
-		| Calcul tSOU DivMul 
+Calcul : Calcul tADD DivMul { Add_instruction(&TI, ADD, $1, $1, $3); }
+		| Calcul tSOU DivMul { Add_instruction(&TI, SOU, $1, $1, $3); }
 		| DivMul  ;
-DivMul :	  DivMul tMUL Terme 
-		| DivMul tDIV Terme 
-		| Terme  ;
+DivMul :	  DivMul tMUL Terme { Add_instruction(&TI, MUL, $1, $1, $3); }
+		| DivMul tDIV Terme { Add_instruction(&TI, DIV, $1, $1, $3); }
+		| Terme  ; { Add_symb_temp(&TS, $1, "int"); }
 Terme :		  tPO Calcul tPF 
-		| tID 
-		| tNB
-		| AppelFonction ;
+		| tID { Add_symb_temp(&TS, $1, "int"); }
+		| tNB { Add_symb_temp(&TS, $1, "int"); }
+		| AppelFonction { Add_symb_temp(&TS, $1, "int"); };
 		
 %%
 
