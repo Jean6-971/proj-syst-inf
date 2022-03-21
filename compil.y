@@ -2,17 +2,16 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "tableSymbole.h"
-#include "tableInstruction.h"
+#include "TableInstruction.h"
 int var[26];
 void yyerror(char *s);
 
 %}
 
 %union { int nb; char var[16]; }
-%token tMAIN tAO tAF tCONST tINT tEGAL tSOU tADD tMUL tDIV tPO tPF tV tFI tPRINTF tIF tELSE tWHILE tERROR tRETURN tVOID tINF tSUP tSUPEGAL tINFEGAL tDIF tG
+%token tMAIN tAO tAF tCONST tINT tEGAL tSOU tADD tMUL tDIV tPO tPF tV tFI tPRINTF tIF tELSE tWHILE tERROR tRETURN tVOID tINF tSUP tSUPEGAL tINFEGAL tDIF tG tPD
 %token <nb> tNB
 %token <var> tID 
-%type <var> Parametre
 %type <nb> Calcul DivMul Terme AppelFonction
 %start Programme
 
@@ -46,8 +45,7 @@ Body :
 		| AppelFonction tFI Body;
 
 Declaration : tINT tID tFI { printf("Declaration : %s\n",$2); Add_symb($2, "int", false); };
-Initialisation : tINT Parametre tEGAL Calcul tFI { printf("Initialisation directe, par variable, par calcul ou par appel de fonction: %s = %d\n",$2,$4); Add_instruction3(AFC, Get_addr($2), Get_addr_top()); free_temp_top();};
-Parametre : tID { printf("Initialisation symbole: %s\n",$1); Add_symb($1, "int", true);};
+Initialisation : tINT tID {Add_symb($2, "int", true);} tEGAL Calcul tFI { Add_instruction3(AFC, Get_addr($2), Get_addr_top()); free_temp_top();};
 Affectation : tID tEGAL Calcul tFI { printf("Affectation directe, par variable, par calcul ou par appel de fonction: %s = %d\n",$1,$3); Add_instruction3(COP, Get_addr($1), Get_addr_top()); free_temp_top(); Set_init_symbole($1);};
 
 BrancheIf : tIF tPO Conditions tPF tAO Body tAF BranchesElseif { printf("Branche if\n");}; // Incrementer la profondeur ?
@@ -60,7 +58,7 @@ BranchesElseif :
         | tELSE tIF tPO Conditions tPF tAO Body tAF BranchesElseif { printf("Branche else if\n");}
 		| tELSE tAO Body tAF{ printf("Branche else\n");};
 BrancheWhile : tWHILE tPO Conditions tPF tAO Body tAF { printf("Branche while\n"); };
-Printf : tPRINTF tPO tG tID tG tPF tFI { printf("printf : %s \n", $4); };        
+Printf : tPRINTF tPO tG tPD tG tV Calcul tPF tFI { printf("printf : %d \n", $7); Add_instruction2(PRI, Get_addr_top()); free_temp_top(); /*PAS SURS*/ }; // A FAIRE : LES AUTRES TYPES DE PRINTF ???     
 AppelFonction : tID tPO Arguments tPF { printf("Appel fonction : %s\n", $1);};
 Arguments : 
         | ListeArguments;        

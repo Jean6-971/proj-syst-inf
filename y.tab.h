@@ -76,8 +76,9 @@ extern int yydebug;
     tINFEGAL = 282,
     tDIF = 283,
     tG = 284,
-    tNB = 285,
-    tID = 286
+    tPD = 285,
+    tNB = 286,
+    tID = 287
   };
 #endif
 /* Tokens.  */
@@ -108,8 +109,9 @@ extern int yydebug;
 #define tINFEGAL 282
 #define tDIF 283
 #define tG 284
-#define tNB 285
-#define tID 286
+#define tPD 285
+#define tNB 286
+#define tID 287
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -118,7 +120,7 @@ union YYSTYPE
 #line 11 "compil.y"
  int nb; char var[16]; 
 
-#line 122 "y.tab.h"
+#line 124 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

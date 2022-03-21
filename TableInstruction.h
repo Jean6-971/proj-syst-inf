@@ -21,5 +21,6 @@ typedef struct TableInstruction {
 void InitTI();
 int Add_instruction4(enum instruc_asm key_word, int addr, int operand1, int operand2);
 int Add_instruction3(enum instruc_asm key_word, int addr, int operand1);
+int Add_instruction2(enum instruc_asm key_word, int addr);
 Instruction Pop_instruction();
 void Print_ti();

@@ -27,6 +27,17 @@ int Add_instruction3(enum instruc_asm key_word, int addr, int operand1) {
     return 1;
 }
 
+int Add_instruction2(enum instruc_asm key_word, int addr) {
+    Instruction inst;
+    inst.key_word = key_word;
+    inst.addr = addr; 
+    inst.operand1 = -999;
+    inst.operand2 = -999;
+    TI.ti[TI.nb_instructions] = inst;
+    TI.nb_instructions++;
+    return 1;
+}
+
 Instruction Pop_instruction(){
     if (TI.nb_instructions==0){
         printf("Aucune instructions dans la table\n");

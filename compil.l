@@ -44,7 +44,7 @@ void { return tVOID;}
 "/"	{ return tDIV; }
 "("	{ return tPO; }
 ")"	{ return tPF; }
-
+"%d" {return tPD; }
 "," { return tV; }
 
 ";" { return tFI;}
