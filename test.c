@@ -1,3 +1,7 @@
-int main() {
-    return 0;
+main() {
+    int a = 1;
+    if (a==2){
+        a = 2;
+    }
+
 }

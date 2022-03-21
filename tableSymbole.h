@@ -1,17 +1,41 @@
-typedef struct Symbole Symbole;
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
 
-typedef struct TableSymbole TableSymbole;
+typedef struct Symbole {
+    char id[16];
+    int addr;
+    char type[16];
+    bool init;
+    int depth;
+} Symbole;
 
-void Init(TableSymbole * p_TS);
 
-int Add_symb(TableSymbole * p_TS, char id[16], char type[16], bool init);
+typedef struct TableSymbole {
+    Symbole ts[1000];
+    int nb_symboles;
+    int depth;
+} TableSymbole;
 
-void Inc_depth(TableSymbole * p_TS);
+void InitTS();
 
-int Dec_depth(TableSymbole * p_TS);
+int Add_symb(char id[16], char type[16], bool init);
 
-int Get_addr(TableSymbole TS, char id[16]);
+void Inc_depth();
 
-void Print_ts(TableSymbole TS);
+int Dec_depth();
 
-int Set_init_symbole(TableSymbole * p_TS, char id[16]);
+int Get_addr(char id[16]);
+
+void Print_ts();
+
+int Set_init_symbole(char id[16]);
+
+int Add_symb_temp(char type[16]);
+
+int Get_addr_top();
+
+int Get_addr_second();
+
+void free_temp_top();

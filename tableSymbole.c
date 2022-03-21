@@ -1,67 +1,62 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdbool.h>
-#include <string.h>
 #include "tableSymbole.h"
 
-typedef struct Symbole {
-    char id[16];
-    int addr;
-    char type[16];
-    bool init;
-    int depth;
-} Symbole;
+TableSymbole TS;
 
-
-typedef struct TableSymbole {
-    Symbole ts[1000];
-    int nb_symboles;
-    int depth;
-} TableSymbole;
-
-void Init(TableSymbole * p_TS) {
-    p_TS->depth = 0;
-    p_TS->nb_symboles = 0;
+void InitTS(){
+    TS.depth = 0;
+    TS.nb_symboles = 0;
 }
 
-int Add_symb(TableSymbole * p_TS, char id[16], char type[16], bool init) {
-    for(int i = 0; i < p_TS->nb_symboles; i++){
-        if (!strcmp(id, p_TS->ts[i].id)) {
+int Add_symb(char id[16], char type[16], bool init) {
+    for(int i = 0; i < TS.nb_symboles; i++){
+        if (!strcmp(id, TS.ts[i].id)) {
             printf("Symbole déja existant\n");
             return -1;
         }
     }
     Symbole symb;
     strcpy(symb.id, id);
-    symb.addr = p_TS->nb_symboles; 
+    symb.addr = TS.nb_symboles; 
     strcpy(symb.type, type);
     symb.init = init;
-    symb.depth = p_TS->depth;
-    p_TS->ts[p_TS->nb_symboles] = symb;
-    p_TS->nb_symboles++;
+    symb.depth = TS.depth;
+    TS.ts[TS.nb_symboles] = symb;
+    TS.nb_symboles++;
     return 1;
 }
 
-void Inc_depth(TableSymbole * p_TS) {
-    p_TS->depth++;
+int Add_symb_temp(char type[16]) {
+    Symbole symb;
+    strcpy(symb.id, "temp");
+    symb.addr = TS.nb_symboles; 
+    strcpy(symb.type, type);
+    symb.init = true;
+    symb.depth = TS.depth;
+    TS.ts[TS.nb_symboles] = symb;
+    TS.nb_symboles++;
+    return 1;
 }
 
-int Dec_depth(TableSymbole * p_TS) {
-    if (p_TS->depth == 0){
+void Inc_depth(){
+    TS.depth++;
+}
+
+int Dec_depth(){
+    if (TS.depth == 0){
         printf("Profondeur déjà égale à 0\n");
         return -1;
     }
-    p_TS->depth--;
-    for(int i = 0; i < p_TS->nb_symboles; i++){
-        if (p_TS->ts[i].depth > p_TS->depth) {
-            p_TS->nb_symboles = i;
+    TS.depth--;
+    for(int i = 0; i < TS.nb_symboles; i++){
+        if (TS.ts[i].depth > TS.depth) {
+            TS.nb_symboles = i;
             break;
         }
     }
     return 1;
 }
 
-int Get_addr(TableSymbole TS, char id[16]) {
+int Get_addr(char id[16]) {
     for(int i = 0; i < TS.nb_symboles; i++){
         if (!strcmp(id, TS.ts[i].id)) {
             return TS.ts[i].addr;
@@ -71,17 +66,29 @@ int Get_addr(TableSymbole TS, char id[16]) {
     return -1;
 }
 
-void Print_ts(TableSymbole TS) {
+int Get_addr_top() {
+    return TS.ts[TS.nb_symboles - 1].addr;
+}
+
+int Get_addr_second() {
+    return TS.ts[TS.nb_symboles - 2].addr;
+}
+
+void free_temp_top(){
+    TS.nb_symboles--;
+}
+
+void Print_ts() {
     printf(" ID | ADDR | TYPE | INIT | DEPTH\n");
     for(int i = 0; i < TS.nb_symboles; i++){
         printf(" %s    %d    %s     %d      %d  \n", TS.ts[i].id, TS.ts[i].addr, TS.ts[i].type, TS.ts[i].init, TS.ts[i].depth);
     }
 }
 
-int Set_init_symbole(TableSymbole * p_TS, char id[16]) {
-    for(int i = 0; i < p_TS->nb_symboles; i++){
-        if (!strcmp(id, p_TS->ts[i].id)) {
-            p_TS->ts[i].init = true;
+int Set_init_symbole(char id[16]) {
+    for(int i = 0; i < TS.nb_symboles; i++){
+        if (!strcmp(id, TS.ts[i].id)) {
+            TS.ts[i].init = true;
             return 0;
         }
     }
@@ -89,13 +96,12 @@ int Set_init_symbole(TableSymbole * p_TS, char id[16]) {
     return -1;
 }
 
-int main() {
-    TableSymbole TS;
-    Init(&TS);
-    Add_symb(&TS, "abc", "int", 0);
-    Inc_depth(&TS);
-    Add_symb(&TS, "ab", "int", 1);
-    Set_init_symbole(&TS, "abc");
-    Print_ts(TS);
+/* int main() {
+    InitTS();
+    Add_symb("abc", "int", 0);
+    Inc_depth();
+    Add_symb("ab", "int", 1);
+    Set_init_symbole("abc");
+    Print_ts();
     return 0;
-}
+} */
