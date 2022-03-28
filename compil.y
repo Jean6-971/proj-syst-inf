@@ -3,16 +3,17 @@
 #include <stdio.h>
 #include "tableSymbole.h"
 #include "TableInstruction.h"
+#include "Interpreteur.h"
 int var[26];
 void yyerror(char *s);
 
 %}
 
 %union { int nb; char var[16]; }
-%token tMAIN tAO tAF tCONST tINT tEGAL tSOU tADD tMUL tDIV tPO tPF tV tFI tPRINTF tIF tELSE tWHILE tERROR tRETURN tVOID tINF tSUP tSUPEGAL tINFEGAL tDIF tG tPD
-%token <nb> tNB
+%token tMAIN tAO tAF tCONST tINT tEGAL tSOU tADD tMUL tDIV tPO tPF tV tFI tPRINTF tWHILE tERROR tRETURN tVOID tINF tSUP tG 
+%token <nb> tNB tIF tELSE
 %token <var> tID 
-%type <nb> Calcul DivMul Terme AppelFonction
+%type <nb> Calcul DivMul Terme AppelFonction 
 %start Programme
 
 
@@ -30,7 +31,7 @@ ArgumentsDeclaration :
 ListeArgumentsDeclaration : tINT tID
     | tINT tID tV ListeArgumentsDeclaration; 
 Main : tINT tMAIN tPO tPF tAO BodyRet tAF { printf("Main avec return\n"); }
-		| tVOID tMAIN tPO tPF tAO Body tAF { printf("Main sans return \n"); };
+		| tVOID tMAIN tPO tPF tAO Body tAF { printf("Main sans return \n"); }
 		| tMAIN tPO tPF tAO Body tAF { printf("Main sans rien \n"); };
 
 BodyRet: Body tRETURN Calcul tFI { printf("Return : %d\n",$3); };
@@ -45,20 +46,26 @@ Body :
 		| AppelFonction tFI Body;
 
 Declaration : tINT tID tFI { printf("Declaration : %s\n",$2); Add_symb($2, "int", false); };
-Initialisation : tINT tID {Add_symb($2, "int", true);} tEGAL Calcul tFI { Add_instruction3(AFC, Get_addr($2), Get_addr_top()); free_temp_top();};
+Initialisation : tINT tID {Add_symb($2, "int", true);} tEGAL Calcul tFI { Add_instruction3(COP, Get_addr($2), Get_addr_top()); free_temp_top();};
 Affectation : tID tEGAL Calcul tFI { printf("Affectation directe, par variable, par calcul ou par appel de fonction: %s = %d\n",$1,$3); Add_instruction3(COP, Get_addr($1), Get_addr_top()); free_temp_top(); Set_init_symbole($1);};
 
-BrancheIf : tIF tPO Conditions tPF tAO Body tAF BranchesElseif { printf("Branche if\n");}; // Incrementer la profondeur ?
-Conditions : Calcul Comparateur Calcul
-        | Calcul
-		| Calcul Comparateur Calcul Conditions {}//comparaison ??
-        | Calcul Conditions;
-Comparateur : tEGAL tEGAL | tINF | tSUP | tINFEGAL | tSUPEGAL | tDIF;  
-BranchesElseif : 
-        | tELSE tIF tPO Conditions tPF tAO Body tAF BranchesElseif { printf("Branche else if\n");}
-		| tELSE tAO Body tAF{ printf("Branche else\n");};
+BrancheIf : tIF tPO Conditions tPF { Add_instruction3(JMF , Get_addr_top(), get_nb_instructions()+2); $1 = get_nb_instructions(); free_temp_top(); Inc_depth();} tAO Body {patchJMZ($1, get_nb_instructions()+1); Print_ts(); Dec_depth();} tAF { printf("Branche if\n");}
+| tIF tPO Conditions tPF { Add_instruction3(JMF , Get_addr_top(), get_nb_instructions()+2); $1 = get_nb_instructions(); free_temp_top(); Inc_depth(); } tAO Body {patchJMZ($1, get_nb_instructions()+2); Print_ts(); Dec_depth();} tAF BranchesElseif { printf("Branche if\n");};
+		
+Conditions : Calcul tEGAL tEGAL Calcul { printf("Comparaison ==\n"); Add_instruction4(EQU, Get_addr_second(), Get_addr_second(), Get_addr_top()); free_temp_top(); }
+		| Calcul tINF Calcul { printf("Comparaison <\n"); Add_instruction4(INF, Get_addr_second(), Get_addr_second(), Get_addr_top()); free_temp_top(); }
+        | Calcul tSUP Calcul { printf("Comparaison >\n"); Add_instruction4(SUP, Get_addr_second(), Get_addr_second(), Get_addr_top()); free_temp_top(); }
+        | Calcul { printf("Comparaison true or false\n"); Add_instruction4(EQU, Get_addr_second(), 1, Get_addr_top());};
+		/*| Calcul tEGAL tEGAL Calcul Conditions {}//A MODIFIER
+		| Calcul tINF Calcul Conditions {}
+		| Calcul tSUP Calcul Conditions {}
+        | Calcul Conditions;*/
+ 
+BranchesElseif :tELSE BrancheIf { printf("Branche else if\n");}
+		| tELSE {Add_instruction3(JMP , Get_addr_top(), get_nb_instructions()+2); $1 = get_nb_instructions(); Inc_depth();} tAO Body tAF {patchJMP($1, get_nb_instructions()+1); Print_ts(); Dec_depth(); printf("Branche else\n");};
+
 BrancheWhile : tWHILE tPO Conditions tPF tAO Body tAF { printf("Branche while\n"); };
-Printf : tPRINTF tPO tG tPD tG tV Calcul tPF tFI { printf("printf : %d \n", $7); Add_instruction2(PRI, Get_addr_top()); free_temp_top(); /*PAS SURS*/ }; // A FAIRE : LES AUTRES TYPES DE PRINTF ???     
+Printf : tPRINTF tPO tID tPF tFI { printf("printf : %s \n", $3); Add_instruction2(PRI, Get_addr($3));}; 
 AppelFonction : tID tPO Arguments tPF { printf("Appel fonction : %s\n", $1);};
 Arguments : 
         | ListeArguments;        
@@ -88,5 +95,6 @@ int main(void) {
   	yyparse();
 	Print_ts();
 	Print_ti();
+	interpreteur();
  	return 0;
 }

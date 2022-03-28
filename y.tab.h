@@ -64,21 +64,17 @@ extern int yydebug;
     tV = 270,
     tFI = 271,
     tPRINTF = 272,
-    tIF = 273,
-    tELSE = 274,
-    tWHILE = 275,
-    tERROR = 276,
-    tRETURN = 277,
-    tVOID = 278,
-    tINF = 279,
-    tSUP = 280,
-    tSUPEGAL = 281,
-    tINFEGAL = 282,
-    tDIF = 283,
-    tG = 284,
-    tPD = 285,
-    tNB = 286,
-    tID = 287
+    tWHILE = 273,
+    tERROR = 274,
+    tRETURN = 275,
+    tVOID = 276,
+    tINF = 277,
+    tSUP = 278,
+    tG = 279,
+    tNB = 280,
+    tIF = 281,
+    tELSE = 282,
+    tID = 283
   };
 #endif
 /* Tokens.  */
@@ -97,30 +93,26 @@ extern int yydebug;
 #define tV 270
 #define tFI 271
 #define tPRINTF 272
-#define tIF 273
-#define tELSE 274
-#define tWHILE 275
-#define tERROR 276
-#define tRETURN 277
-#define tVOID 278
-#define tINF 279
-#define tSUP 280
-#define tSUPEGAL 281
-#define tINFEGAL 282
-#define tDIF 283
-#define tG 284
-#define tPD 285
-#define tNB 286
-#define tID 287
+#define tWHILE 273
+#define tERROR 274
+#define tRETURN 275
+#define tVOID 276
+#define tINF 277
+#define tSUP 278
+#define tG 279
+#define tNB 280
+#define tIF 281
+#define tELSE 282
+#define tID 283
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 11 "compil.y"
+#line 12 "compil.y"
  int nb; char var[16]; 
 
-#line 124 "y.tab.h"
+#line 116 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

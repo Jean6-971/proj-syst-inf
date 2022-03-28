@@ -55,6 +55,21 @@ void Print_ti() {
     }
 }
 
+int get_nb_instructions(){
+    return TI.nb_instructions;
+}
+
+void patchJMZ(int ligne_modif, int ligne_jump){
+    TI.ti[ligne_modif-1].operand1 = ligne_jump;
+}
+
+void patchJMP(int ligne_modif, int ligne_jump){
+    TI.ti[ligne_modif-1].addr = ligne_jump;
+}
+
+TableInstruction get_TI() {
+    return TI;
+}
 
 /* int main() {
     InitTI();

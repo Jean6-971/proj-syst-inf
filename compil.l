@@ -35,16 +35,12 @@ void { return tVOID;}
 "="	{ return tEGAL; }
 "<" { return tINF ; }
 ">" { return tSUP ; }
-"<=" { return tINFEGAL ; }
-">=" { return tSUPEGAL ; }
-"!=" { return tDIF ; }
 "-"	{ return tSOU; }
 "+"	{ return tADD; }
 "*"	{ return tMUL; }
 "/"	{ return tDIV; }
 "("	{ return tPO; }
 ")"	{ return tPF; }
-"%d" {return tPD; }
 "," { return tV; }
 
 ";" { return tFI;}
