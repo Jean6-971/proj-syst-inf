@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-enum instruc_asm {ADD, MUL, SOU, DIV, COP, AFC, JMP, JMF, INF, SUP, EQU, PRI};
+enum instruc_asm {ADD, MUL, SOU, DIV, COP, AFC, JMP, JMF, INF, SUP, EQU, PRI}; // LOAD = 12 ; STORE = 13
 
 typedef struct Instruction {
     enum instruc_asm key_word;
