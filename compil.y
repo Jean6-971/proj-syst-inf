@@ -37,6 +37,7 @@ Main : tINT tMAIN tPO tPF tAO BodyRet tAF { printf("Main avec return\n"); }
 BodyRet: Body tRETURN Calcul tFI { printf("Return : %d\n",$3); };
         
 Body : 
+		| MultDeclaInit Body
 		| Declaration Body
 		| Initialisation Body
 		| Affectation Body
@@ -45,13 +46,24 @@ Body :
 		| Printf Body
 		| AppelFonction tFI Body;
 
-Declaration : tINT tID tFI { printf("Declaration : %s\n",$2); Add_symb($2, "int", false); };
-Initialisation : tINT tID {Add_symb($2, "int", true);} tEGAL Calcul tFI { Add_instruction3(COP, Get_addr($2), Get_addr_top()); free_temp_top();};
+MultDeclaInit : tID tFI { printf("Declaration : %s\n",$1); Add_symb($1, "int", false); }
+			| tID { printf("Declaration : %s\n",$1); Add_symb($1, "int", false); } tV MultDeclaInit ;
+			| tID {printf("Affectation  : %s = ",$1); Add_symb($1, "int", true);} tEGAL Calcul {printf("%d\n",$4); Add_instruction3(COP, Get_addr($1), Get_addr_top()); free_temp_top();} FinInitialisation
+			
+
+Declaration : tINT tID { printf("Declaration : %s\n",$2); Add_symb($2, "int", false); } tFI
+			| tINT tID { printf("Declaration : %s\n",$2); Add_symb($2, "int", false); } tV  MultDeclaInit ; // Intéressant de parler de la diff d'implementation entre les deux
+
+// REMARQUE RAPPORT : le Add_symb($2, "int", true) décale l'index des $ (et la considère comme une valeur)
+Initialisation : tINT tID {printf("Affectation  : %s = ",$2); Add_symb($2, "int", true);} tEGAL Calcul {printf("%d\n",$5); Add_instruction3(COP, Get_addr($2), Get_addr_top()); free_temp_top();} FinInitialisation;
+FinInitialisation : tFI            // TRES INTERESSANT POUR LE RAPPORT (obligatoire sinon ça bug à cause du Calcul, à comparer avec décla)
+				| tV MultDeclaInit;
+
 Affectation : tID tEGAL Calcul tFI { printf("Affectation directe, par variable, par calcul ou par appel de fonction: %s = %d\n",$1,$3); Add_instruction3(COP, Get_addr($1), Get_addr_top()); free_temp_top(); Set_init_symbole($1);};
 
 BrancheIf : tIF tPO Conditions tPF { Add_instruction3(JMF , Get_addr_top(), get_nb_instructions()+2); $1 = get_nb_instructions(); free_temp_top(); Inc_depth();} tAO Body {patchJMZ($1, get_nb_instructions()+1); Print_ts(); Dec_depth();} tAF { printf("Branche if\n");}
 | tIF tPO Conditions tPF { Add_instruction3(JMF , Get_addr_top(), get_nb_instructions()+2); $1 = get_nb_instructions(); free_temp_top(); Inc_depth(); } tAO Body {patchJMZ($1, get_nb_instructions()+2); Print_ts(); Dec_depth();} tAF BranchesElseif { printf("Branche if\n");};
-		
+	
 Conditions : Calcul tEGAL tEGAL Calcul { printf("Comparaison ==\n"); Add_instruction4(EQU, Get_addr_second(), Get_addr_second(), Get_addr_top()); free_temp_top(); }
 		| Calcul tINF Calcul { printf("Comparaison <\n"); Add_instruction4(INF, Get_addr_second(), Get_addr_second(), Get_addr_top()); free_temp_top(); }
         | Calcul tSUP Calcul { printf("Comparaison >\n"); Add_instruction4(SUP, Get_addr_second(), Get_addr_second(), Get_addr_top()); free_temp_top(); }
