@@ -1,13 +1,13 @@
-void fonction (){
-    int a = 1;
-    printf(a)
+void fonction_1 (int b){
+    printf(b);
 }
 
 
-main() {
-    fonction()
 
-    
-    
+main() {
+    int a = 1;
+    fonction_1(a);
+    fonction_2(a);
+
 
 }

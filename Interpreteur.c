@@ -6,7 +6,6 @@
 void interpreteur(){
     TableInstruction TI = get_TI();
     int tableau_entier[100];
-    int nb_entier = 0;
     int current_instruction = 0;
     while (current_instruction < get_nb_instructions()){
         switch (TI.ti[current_instruction].key_word){

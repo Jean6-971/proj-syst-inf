@@ -47,8 +47,6 @@ int Add_instruction2(enum instruc_asm key_word, int addr) {
 Instruction Pop_instruction(){
     if (TI.nb_instructions==0){
         printf("Aucune instructions dans la table\n");
-        Instruction inst;
-        return inst;
     }
     TI.nb_instructions--;
     return TI.ti[TI.nb_instructions+1];
@@ -71,6 +69,10 @@ void patchJMF(int ligne_jump){
 
 void patchJMP(int ligne_jump){
     TI.ti[TI.num_instru_JMP].addr = ligne_jump;    
+}
+
+void patchJMP_fonction(int numero_instru, int ligne_jump){
+    TI.ti[numero_instru-1].addr = ligne_jump; 
 }
 
 TableInstruction get_TI() {

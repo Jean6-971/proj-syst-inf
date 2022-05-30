@@ -4,14 +4,15 @@
 #include "tableSymbole.h"
 #include "TableInstruction.h"
 #include "Interpreteur.h"
+#include "TableFonction.h"
 int var[26];
 void yyerror(char *s);
 
 %}
 
 %union { int nb; char var[16]; }
-%token tMAIN tAO tAF tCONST tINT tEGAL tSOU tADD tMUL tDIV tPO tPF tV tFI tPRINTF tERROR tRETURN tVOID tINF tSUP tG 
-%token <nb> tNB tIF tELSE tWHILE
+%token tMAIN tAO tAF tCONST tINT tEGAL tSOU tADD tMUL tDIV tPO tPF tV tFI tPRINTF tERROR tRETURN tINF tSUP tG 
+%token <nb> tNB tIF tELSE tWHILE tVOID
 %token <var> tID 
 %type <nb> Calcul DivMul Terme AppelFonction 
 %start Programme
@@ -25,11 +26,11 @@ Fonctions : Fonctions Main { printf("Fonctions Main\n"); }
 		| Fonctions Fonction { printf("Fonctions Fonction\n"); }
 		| Fonction { printf("Fonction\n"); };
 Fonction : tINT tID tPO ArgumentsDeclaration tPF tAO BodyRet tAF { printf("Fonction %s avec return\n",$2); }
-        | tVOID tID tPO ArgumentsDeclaration tPF tAO Body tAF { printf("Fonction %s sans return\n",$2); };
+        | tVOID tID { Add_instruction2(JMP , -1); $1 = get_nb_instructions() + 1;} tPO ArgumentsDeclaration tPF tAO Body tAF { printf("Fonction %s sans return\n",$2); patchJMP(get_nb_instructions()+2);  Add_instruction2(JMP , 100); Add_Function($2, $1, get_nb_instructions());};
 ArgumentsDeclaration : 
         | ListeArgumentsDeclaration;        
-ListeArgumentsDeclaration : tINT tID
-    | tINT tID tV ListeArgumentsDeclaration; 
+ListeArgumentsDeclaration : tINT tID { Add_symb_func($2, get_addr_argument(), "int", true); reset_addr_argument();}
+    | tINT tID tV { Add_symb_func($2, get_addr_argument(), "int", true);} ListeArgumentsDeclaration; 
 Main : tINT tMAIN tPO tPF tAO BodyRet tAF { printf("Main avec return\n"); }
 		| tVOID tMAIN tPO tPF tAO Body tAF { printf("Main sans return \n"); }
 		| tMAIN tPO tPF tAO Body tAF { printf("Main sans rien \n"); };
@@ -44,18 +45,18 @@ Body :
 		| BrancheIf Body
 		| BrancheWhile Body
 		| Printf Body
-		| AppelFonction tFI Body;
+		| AppelFonction Body;
 
 MultDeclaInit : tID tFI { printf("Declaration : %s\n",$1); Add_symb($1, "int", false); }
 			| tID { printf("Declaration : %s\n",$1); Add_symb($1, "int", false); } tV MultDeclaInit ;
-			| tID {printf("Affectation  : %s = ",$1); Add_symb($1, "int", true);} tEGAL Calcul {printf("%d\n",$4); Add_instruction3(COP, Get_addr($1), Get_addr_top()); free_temp_top();} FinInitialisation
+			| tID {printf("Initialisation  : %s = ",$1); Add_symb($1, "int", true);} tEGAL Calcul {printf("%d\n",$4); Add_instruction3(COP, Get_addr($1), Get_addr_top()); free_temp_top();} FinInitialisation
 			
 
-Declaration : tINT tID  { printf("Declaration 1: %s\n",$2); Add_symb($2, "int", false); } tFI
-			| tINT tID  { printf("Declaration 2: %s\n",$2); Add_symb($2, "int", false); } tV  MultDeclaInit ; // Intéressant de parler de la diff d'implementation entre les deux
+Declaration : tINT tID  { printf("Declaration : %s\n",$2); Add_symb($2, "int", false); } tFI
+			| tINT tID  { printf("Declaration : %s\n",$2); Add_symb($2, "int", false); } tV  MultDeclaInit ; // Intéressant de parler de la diff d'implementation entre les deux
 
 // REMARQUE RAPPORT : le Add_symb($2, "int", true) décale l'index des $ (et la considère comme une valeur)
-Initialisation : tINT tID {printf("Affectation  : %s = ",$2); Add_symb($2, "int", true);} tEGAL Calcul {printf("%d\n",$5); Add_instruction3(COP, Get_addr($2), Get_addr_top()); free_temp_top();} FinInitialisation;
+Initialisation : tINT tID {printf("Initialisation  : %s = ",$2); Add_symb($2, "int", true);} tEGAL Calcul {printf("%d\n",$5); Add_instruction3(COP, Get_addr($2), Get_addr_top()); free_temp_top();} FinInitialisation;
 
 FinInitialisation : tFI            // TRES INTERESSANT POUR LE RAPPORT (obligatoire sinon ça bug à cause du Calcul, à comparer avec décla)
 				| tV MultDeclaInit;
@@ -79,11 +80,11 @@ BranchesElseif : {patchJMF(get_nb_instructions()+1); Dec_depth();}
 
 BrancheWhile : tWHILE tPO Conditions tPF {  Add_instruction3(JMF , Get_addr_top(), -1); free_temp_top(); Inc_depth(); $1 = get_nb_instructions() - 3;} tAO Body tAF { patchJMF(get_nb_instructions()+2); Add_instruction2(JMP , $1); printf("Branche while\n"); };
 Printf : tPRINTF tPO tID tPF tFI { printf("printf : %s \n", $3); Add_instruction2(PRI, Get_addr($3));}; 
-AppelFonction : tID tPO Arguments tPF { printf("Appel fonction : %s\n", $1);};
+AppelFonction : tID tPO Arguments tPF tFI { Add_instruction2(JMP, get_numero_instru_debut($1)); patchJMP_fonction(get_numero_instru_fin($1), get_nb_instructions() + 1); printf("Appel fonction : %s\n", $1);};
 Arguments : 
         | ListeArguments;        
-ListeArguments : Calcul
-    | Calcul tV ListeArguments;
+ListeArguments : Calcul { Add_instruction3(COP, get_addr_argument(), Get_addr_top()); free_temp_top(); reset_addr_argument();}
+    | Calcul tV { Add_instruction3(COP, get_addr_argument(), Get_addr_top()); free_temp_top();} ListeArguments;
     
 Calcul : Calcul tADD DivMul { Add_instruction4(ADD, Get_addr_second(), Get_addr_second(), Get_addr_top()); free_temp_top(); }
 		| Calcul tSOU DivMul { Add_instruction4(SOU, Get_addr_second(), Get_addr_second(), Get_addr_top()); free_temp_top(); }
@@ -104,6 +105,7 @@ int main(void) {
 	/* yydebug=1; */ 
 	InitTS();  
 	InitTI(); 
+	InitTF();
   	printf("Compilateur\n");
   	yyparse();
 	Print_ts();

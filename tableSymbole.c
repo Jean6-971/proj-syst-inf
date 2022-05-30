@@ -7,7 +7,7 @@ void InitTS(){
     TS.nb_symboles = 0;
 }
 
-int Add_symb(char id[16], char type[16], bool init) {
+int Add_symb(char * id, char * type, bool init) {
     for(int i = 0; i < TS.nb_symboles; i++){
         if (!strcmp(id, TS.ts[i].id)) {
             printf("Symbole déja existant\n");
@@ -25,7 +25,7 @@ int Add_symb(char id[16], char type[16], bool init) {
     return 1;
 }
 
-int Add_symb_temp(char type[16]) {
+void Add_symb_temp(char * type) {
     Symbole symb;
     strcpy(symb.id, "temp");
     symb.addr = TS.nb_symboles; 
@@ -34,7 +34,17 @@ int Add_symb_temp(char type[16]) {
     symb.depth = TS.depth;
     TS.ts[TS.nb_symboles] = symb;
     TS.nb_symboles++;
-    return 1;
+}
+
+void Add_symb_func(char * id, int addr, char * type, bool init) {
+    Symbole symb;
+    strcpy(symb.id, id);
+    symb.addr = addr; 
+    strcpy(symb.type, type);
+    symb.init = init;
+    symb.depth = TS.depth;
+    TS.ts[TS.nb_symboles] = symb;
+    TS.nb_symboles++;
 }
 
 void Inc_depth(){
@@ -56,7 +66,7 @@ int Dec_depth(){
     return 1;
 }
 
-int Get_addr(char id[16]) {
+int Get_addr(char * id) {
     for(int i = 0; i < TS.nb_symboles; i++){
         if (!strcmp(id, TS.ts[i].id)) {
             return TS.ts[i].addr;
@@ -85,7 +95,7 @@ void Print_ts() {
     }
 }
 
-int Set_init_symbole(char id[16]) {
+int Set_init_symbole(char * id) {
     for(int i = 0; i < TS.nb_symboles; i++){
         if (!strcmp(id, TS.ts[i].id)) {
             TS.ts[i].init = true;

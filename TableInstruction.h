@@ -29,5 +29,6 @@ void Print_ti();
 int get_nb_instructions();
 void patchJMF(int ligne_jump);
 void patchJMP(int ligne_jump);
+void patchJMP_fonction(int numero_instru, int ligne_jump);
 
 TableInstruction get_TI();

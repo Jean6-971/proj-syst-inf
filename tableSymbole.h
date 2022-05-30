@@ -20,22 +20,24 @@ typedef struct TableSymbole {
 
 void InitTS();
 
-int Add_symb(char id[16], char type[16], bool init);
+int Add_symb(char * id, char * type, bool init);
 
 void Inc_depth();
 
 int Dec_depth();
 
-int Get_addr(char id[16]);
+int Get_addr(char * id);
 
 void Print_ts();
 
-int Set_init_symbole(char id[16]);
+int Set_init_symbole(char * id);
 
-int Add_symb_temp(char type[16]);
+void Add_symb_temp(char * type);
 
 int Get_addr_top();
 
 int Get_addr_second();
 
 void free_temp_top();
+
+void Add_symb_func(char * id, int addr, char * type, bool init);

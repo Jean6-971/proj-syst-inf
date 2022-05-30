@@ -18,14 +18,14 @@
 #define tPRINTF 271
 #define tERROR 272
 #define tRETURN 273
-#define tVOID 274
-#define tINF 275
-#define tSUP 276
-#define tG 277
-#define tNB 278
-#define tIF 279
-#define tELSE 280
-#define tWHILE 281
+#define tINF 274
+#define tSUP 275
+#define tG 276
+#define tNB 277
+#define tIF 278
+#define tELSE 279
+#define tWHILE 280
+#define tVOID 281
 #define tID 282
 #ifdef YYSTYPE
 #undef  YYSTYPE_IS_DECLARED
