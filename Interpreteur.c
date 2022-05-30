@@ -37,12 +37,14 @@ void interpreteur(){
                 break;
             case JMP:
                 printf("JMP %d\n", TI.ti[current_instruction].addr);
-                current_instruction = TI.ti[current_instruction].addr;
+                current_instruction = TI.ti[current_instruction].addr - 1; // pour avoir l'indice de l'instruction
+                current_instruction--; // car il y a une incrémentation de current_instruction en bas 
                 break;
             case JMF:
                 printf("JMF %d, %d\n", TI.ti[current_instruction].addr, TI.ti[current_instruction].operand1);
                 if (!tableau_entier[TI.ti[current_instruction].addr]){
-                    current_instruction = TI.ti[current_instruction].operand1;
+                    current_instruction = TI.ti[current_instruction].operand1 - 1; // pour avoir l'indice de l'instruction
+                    current_instruction--; // car il y a une incrémentation de current_instruction en bas
                 }
                 break;
             case INF:

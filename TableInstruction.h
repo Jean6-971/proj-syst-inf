@@ -16,6 +16,8 @@ typedef struct Instruction {
 typedef struct TableInstruction {
     Instruction ti[1000];
     int nb_instructions;
+    int num_instru_JMF, num_instru_JMP;
+
 } TableInstruction;
 
 void InitTI();
@@ -25,7 +27,7 @@ int Add_instruction2(enum instruc_asm key_word, int addr);
 Instruction Pop_instruction();
 void Print_ti();
 int get_nb_instructions();
-void patchJMZ(int ligne_modif, int ligne_jump);
-void patchJMP(int ligne_modif, int ligne_jump);
+void patchJMF(int ligne_jump);
+void patchJMP(int ligne_jump);
 
 TableInstruction get_TI();

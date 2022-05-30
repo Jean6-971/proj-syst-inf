@@ -19,6 +19,9 @@ int Add_instruction4(enum instruc_asm key_word, int addr, int operand1, int oper
 int Add_instruction3(enum instruc_asm key_word, int addr, int operand1) {
     Instruction inst;
     inst.key_word = key_word;
+    if (key_word == 7) {
+        TI.num_instru_JMF = TI.nb_instructions;
+    }
     inst.addr = addr; 
     inst.operand1 = operand1;
     inst.operand2 = -999;
@@ -30,11 +33,14 @@ int Add_instruction3(enum instruc_asm key_word, int addr, int operand1) {
 int Add_instruction2(enum instruc_asm key_word, int addr) {
     Instruction inst;
     inst.key_word = key_word;
+    if (key_word == JMP) {
+        TI.num_instru_JMP = TI.nb_instructions;
+    }
     inst.addr = addr; 
     inst.operand1 = -999;
     inst.operand2 = -999;
     TI.ti[TI.nb_instructions] = inst;
-    TI.nb_instructions++;
+    TI.nb_instructions++; 
     return 1;
 }
 
@@ -59,12 +65,12 @@ int get_nb_instructions(){
     return TI.nb_instructions;
 }
 
-void patchJMZ(int ligne_modif, int ligne_jump){
-    TI.ti[ligne_modif-1].operand1 = ligne_jump;
+void patchJMF(int ligne_jump){
+    TI.ti[TI.num_instru_JMF].operand1 = ligne_jump;
 }
 
-void patchJMP(int ligne_modif, int ligne_jump){
-    TI.ti[ligne_modif-1].addr = ligne_jump;
+void patchJMP(int ligne_jump){
+    TI.ti[TI.num_instru_JMP].addr = ligne_jump;    
 }
 
 TableInstruction get_TI() {
