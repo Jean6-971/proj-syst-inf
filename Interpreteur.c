@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "Interpreteur.h"
 #include "TableInstruction.h"
 
 
@@ -12,7 +11,6 @@ void interpreteur(){
             case ADD:
                 tableau_entier[TI.ti[current_instruction].addr] = tableau_entier[TI.ti[current_instruction].operand1] + tableau_entier[TI.ti[current_instruction].operand2];
                 printf("ADD %d, %d, %d\n", TI.ti[current_instruction].addr, TI.ti[current_instruction].operand1, TI.ti[current_instruction].operand2);
-
                 break;
             case MUL:
                 tableau_entier[TI.ti[current_instruction].addr] = tableau_entier[TI.ti[current_instruction].operand1] * tableau_entier[TI.ti[current_instruction].operand2];

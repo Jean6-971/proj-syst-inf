@@ -85,51 +85,50 @@
   49  Conditions : Calcul tEGAL tEGAL Calcul
   50             | Calcul tINF Calcul
   51             | Calcul tSUP Calcul
-  52             | Calcul
 
-  53  BranchesElseif :
+  52  BranchesElseif :
 
-  54  $$16 :
+  53  $$16 :
 
-  55  $$17 :
+  54  $$17 :
 
-  56  $$18 :
+  55  $$18 :
 
-  57  BranchesElseif : tELSE tIF $$16 tPO Conditions tPF $$17 tAO Body tAF $$18 BranchesElseif
+  56  BranchesElseif : tELSE tIF $$16 tPO Conditions tPF $$17 tAO Body tAF $$18 BranchesElseif
 
-  58  $$19 :
+  57  $$19 :
 
-  59  BranchesElseif : tELSE $$19 tAO Body tAF
+  58  BranchesElseif : tELSE $$19 tAO Body tAF
 
-  60  $$20 :
+  59  $$20 :
 
-  61  BrancheWhile : tWHILE tPO Conditions tPF $$20 tAO Body tAF
+  60  BrancheWhile : tWHILE tPO Conditions tPF $$20 tAO Body tAF
 
-  62  Printf : tPRINTF tPO tID tPF tFI
+  61  Printf : tPRINTF tPO tID tPF tFI
 
-  63  AppelFonction : tID tPO Arguments tPF
+  62  AppelFonction : tID tPO Arguments tPF
 
-  64  Arguments :
-  65            | ListeArguments
+  63  Arguments :
+  64            | ListeArguments
 
-  66  ListeArguments : Calcul
+  65  ListeArguments : Calcul
 
-  67  $$21 :
+  66  $$21 :
 
-  68  ListeArguments : Calcul tV $$21 ListeArguments
+  67  ListeArguments : Calcul tV $$21 ListeArguments
 
-  69  Calcul : Calcul tADD DivMul
-  70         | Calcul tSOU DivMul
-  71         | DivMul
+  68  Calcul : Calcul tADD DivMul
+  69         | Calcul tSOU DivMul
+  70         | DivMul
 
-  72  DivMul : DivMul tMUL Terme
-  73         | DivMul tDIV Terme
-  74         | Terme
+  71  DivMul : DivMul tMUL Terme
+  72         | DivMul tDIV Terme
+  73         | Terme
 
-  75  Terme : tPO Calcul tPF
-  76        | tID
-  77        | tNB
-  78        | AppelFonction
+  74  Terme : tPO Calcul tPF
+  75        | tID
+  76        | tNB
+  77        | AppelFonction
 
 state 0
 	$accept : . Programme $end  (0)
@@ -346,7 +345,7 @@ state 24
 
 
 state 25
-	Printf : tPRINTF . tPO tID tPF tFI  (62)
+	Printf : tPRINTF . tPO tID tPF tFI  (61)
 
 	tPO  shift 44
 	.  error
@@ -360,7 +359,7 @@ state 26
 
 
 state 27
-	BrancheWhile : tWHILE . tPO Conditions tPF $$20 tAO Body tAF  (61)
+	BrancheWhile : tWHILE . tPO Conditions tPF $$20 tAO Body tAF  (60)
 
 	tPO  shift 46
 	.  error
@@ -377,7 +376,7 @@ state 28
 
 state 29
 	Affectation : tID . tEGAL Calcul tFI  (46)
-	AppelFonction : tID . tPO Arguments tPF  (63)
+	AppelFonction : tID . tPO Arguments tPF  (62)
 
 	tEGAL  shift 48
 	tPO  shift 49
@@ -602,7 +601,7 @@ state 43
 
 
 state 44
-	Printf : tPRINTF tPO . tID tPF tFI  (62)
+	Printf : tPRINTF tPO . tID tPF tFI  (61)
 
 	tID  shift 64
 	.  error
@@ -624,7 +623,7 @@ state 45
 
 
 state 46
-	BrancheWhile : tWHILE tPO . Conditions tPF $$20 tAO Body tAF  (61)
+	BrancheWhile : tWHILE tPO . Conditions tPF $$20 tAO Body tAF  (60)
 
 	tPO  shift 65
 	tNB  shift 66
@@ -670,13 +669,13 @@ state 48
 
 
 state 49
-	AppelFonction : tID tPO . Arguments tPF  (63)
-	Arguments : .  (64)
+	AppelFonction : tID tPO . Arguments tPF  (62)
+	Arguments : .  (63)
 
 	tPO  shift 65
 	tNB  shift 66
 	tID  shift 67
-	tPF  reduce 64
+	tPF  reduce 63
 
 	Calcul  goto 78
 	DivMul  goto 69
@@ -794,14 +793,14 @@ state 63
 
 
 state 64
-	Printf : tPRINTF tPO tID . tPF tFI  (62)
+	Printf : tPRINTF tPO tID . tPF tFI  (61)
 
 	tPF  shift 88
 	.  error
 
 
 state 65
-	Terme : tPO . Calcul tPF  (75)
+	Terme : tPO . Calcul tPF  (74)
 
 	tPO  shift 65
 	tNB  shift 66
@@ -815,71 +814,70 @@ state 65
 
 
 state 66
-	Terme : tNB .  (77)
+	Terme : tNB .  (76)
 
-	.  reduce 77
+	.  reduce 76
 
 
 state 67
-	AppelFonction : tID . tPO Arguments tPF  (63)
-	Terme : tID .  (76)
+	AppelFonction : tID . tPO Arguments tPF  (62)
+	Terme : tID .  (75)
 
 	tPO  shift 49
-	tEGAL  reduce 76
-	tSOU  reduce 76
-	tADD  reduce 76
-	tMUL  reduce 76
-	tDIV  reduce 76
-	tPF  reduce 76
-	tV  reduce 76
-	tFI  reduce 76
-	tINF  reduce 76
-	tSUP  reduce 76
+	tEGAL  reduce 75
+	tSOU  reduce 75
+	tADD  reduce 75
+	tMUL  reduce 75
+	tDIV  reduce 75
+	tPF  reduce 75
+	tV  reduce 75
+	tFI  reduce 75
+	tINF  reduce 75
+	tSUP  reduce 75
 
 
 state 68
 	Conditions : Calcul . tEGAL tEGAL Calcul  (49)
 	Conditions : Calcul . tINF Calcul  (50)
 	Conditions : Calcul . tSUP Calcul  (51)
-	Conditions : Calcul .  (52)
-	Calcul : Calcul . tADD DivMul  (69)
-	Calcul : Calcul . tSOU DivMul  (70)
+	Calcul : Calcul . tADD DivMul  (68)
+	Calcul : Calcul . tSOU DivMul  (69)
 
 	tEGAL  shift 90
 	tSOU  shift 91
 	tADD  shift 92
 	tINF  shift 93
 	tSUP  shift 94
-	tPF  reduce 52
+	.  error
 
 
 state 69
-	Calcul : DivMul .  (71)
-	DivMul : DivMul . tMUL Terme  (72)
-	DivMul : DivMul . tDIV Terme  (73)
+	Calcul : DivMul .  (70)
+	DivMul : DivMul . tMUL Terme  (71)
+	DivMul : DivMul . tDIV Terme  (72)
 
 	tMUL  shift 95
 	tDIV  shift 96
-	tEGAL  reduce 71
-	tSOU  reduce 71
-	tADD  reduce 71
-	tPF  reduce 71
-	tV  reduce 71
-	tFI  reduce 71
-	tINF  reduce 71
-	tSUP  reduce 71
+	tEGAL  reduce 70
+	tSOU  reduce 70
+	tADD  reduce 70
+	tPF  reduce 70
+	tV  reduce 70
+	tFI  reduce 70
+	tINF  reduce 70
+	tSUP  reduce 70
 
 
 state 70
-	DivMul : Terme .  (74)
+	DivMul : Terme .  (73)
 
-	.  reduce 74
+	.  reduce 73
 
 
 state 71
-	Terme : AppelFonction .  (78)
+	Terme : AppelFonction .  (77)
 
-	.  reduce 78
+	.  reduce 77
 
 
 state 72
@@ -890,7 +888,7 @@ state 72
 
 
 state 73
-	BrancheWhile : tWHILE tPO Conditions . tPF $$20 tAO Body tAF  (61)
+	BrancheWhile : tWHILE tPO Conditions . tPF $$20 tAO Body tAF  (60)
 
 	tPF  shift 98
 	.  error
@@ -919,8 +917,8 @@ state 76
 
 state 77
 	Affectation : tID tEGAL Calcul . tFI  (46)
-	Calcul : Calcul . tADD DivMul  (69)
-	Calcul : Calcul . tSOU DivMul  (70)
+	Calcul : Calcul . tADD DivMul  (68)
+	Calcul : Calcul . tSOU DivMul  (69)
 
 	tSOU  shift 91
 	tADD  shift 92
@@ -929,28 +927,28 @@ state 77
 
 
 state 78
-	ListeArguments : Calcul .  (66)
-	ListeArguments : Calcul . tV $$21 ListeArguments  (68)
-	Calcul : Calcul . tADD DivMul  (69)
-	Calcul : Calcul . tSOU DivMul  (70)
+	ListeArguments : Calcul .  (65)
+	ListeArguments : Calcul . tV $$21 ListeArguments  (67)
+	Calcul : Calcul . tADD DivMul  (68)
+	Calcul : Calcul . tSOU DivMul  (69)
 
 	tSOU  shift 91
 	tADD  shift 92
 	tV  shift 103
-	tPF  reduce 66
+	tPF  reduce 65
 
 
 state 79
-	AppelFonction : tID tPO Arguments . tPF  (63)
+	AppelFonction : tID tPO Arguments . tPF  (62)
 
 	tPF  shift 104
 	.  error
 
 
 state 80
-	Arguments : ListeArguments .  (65)
+	Arguments : ListeArguments .  (64)
 
-	.  reduce 65
+	.  reduce 64
 
 
 state 81
@@ -1013,16 +1011,16 @@ state 87
 
 
 state 88
-	Printf : tPRINTF tPO tID tPF . tFI  (62)
+	Printf : tPRINTF tPO tID tPF . tFI  (61)
 
 	tFI  shift 109
 	.  error
 
 
 state 89
-	Calcul : Calcul . tADD DivMul  (69)
-	Calcul : Calcul . tSOU DivMul  (70)
-	Terme : tPO Calcul . tPF  (75)
+	Calcul : Calcul . tADD DivMul  (68)
+	Calcul : Calcul . tSOU DivMul  (69)
+	Terme : tPO Calcul . tPF  (74)
 
 	tSOU  shift 91
 	tADD  shift 92
@@ -1038,7 +1036,7 @@ state 90
 
 
 state 91
-	Calcul : Calcul tSOU . DivMul  (70)
+	Calcul : Calcul tSOU . DivMul  (69)
 
 	tPO  shift 65
 	tNB  shift 66
@@ -1051,7 +1049,7 @@ state 91
 
 
 state 92
-	Calcul : Calcul tADD . DivMul  (69)
+	Calcul : Calcul tADD . DivMul  (68)
 
 	tPO  shift 65
 	tNB  shift 66
@@ -1092,7 +1090,7 @@ state 94
 
 
 state 95
-	DivMul : DivMul tMUL . Terme  (72)
+	DivMul : DivMul tMUL . Terme  (71)
 
 	tPO  shift 65
 	tNB  shift 66
@@ -1104,7 +1102,7 @@ state 95
 
 
 state 96
-	DivMul : DivMul tDIV . Terme  (73)
+	DivMul : DivMul tDIV . Terme  (72)
 
 	tPO  shift 65
 	tNB  shift 66
@@ -1125,10 +1123,10 @@ state 97
 
 
 state 98
-	BrancheWhile : tWHILE tPO Conditions tPF . $$20 tAO Body tAF  (61)
-	$$20 : .  (60)
+	BrancheWhile : tWHILE tPO Conditions tPF . $$20 tAO Body tAF  (60)
+	$$20 : .  (59)
 
-	.  reduce 60
+	.  reduce 59
 
 	$$20  goto 119
 
@@ -1169,18 +1167,18 @@ state 102
 
 
 state 103
-	ListeArguments : Calcul tV . $$21 ListeArguments  (68)
-	$$21 : .  (67)
+	ListeArguments : Calcul tV . $$21 ListeArguments  (67)
+	$$21 : .  (66)
 
-	.  reduce 67
+	.  reduce 66
 
 	$$21  goto 123
 
 
 state 104
-	AppelFonction : tID tPO Arguments tPF .  (63)
+	AppelFonction : tID tPO Arguments tPF .  (62)
 
-	.  reduce 63
+	.  reduce 62
 
 
 state 105
@@ -1215,8 +1213,8 @@ state 106
 
 state 107
 	BodyRet : Body tRETURN Calcul . tFI  (22)
-	Calcul : Calcul . tADD DivMul  (69)
-	Calcul : Calcul . tSOU DivMul  (70)
+	Calcul : Calcul . tADD DivMul  (68)
+	Calcul : Calcul . tSOU DivMul  (69)
 
 	tSOU  shift 91
 	tADD  shift 92
@@ -1247,15 +1245,15 @@ state 108
 
 
 state 109
-	Printf : tPRINTF tPO tID tPF tFI .  (62)
+	Printf : tPRINTF tPO tID tPF tFI .  (61)
 
-	.  reduce 62
+	.  reduce 61
 
 
 state 110
-	Terme : tPO Calcul tPF .  (75)
+	Terme : tPO Calcul tPF .  (74)
 
-	.  reduce 75
+	.  reduce 74
 
 
 state 111
@@ -1273,26 +1271,9 @@ state 111
 
 
 state 112
-	Calcul : Calcul tSOU DivMul .  (70)
-	DivMul : DivMul . tMUL Terme  (72)
-	DivMul : DivMul . tDIV Terme  (73)
-
-	tMUL  shift 95
-	tDIV  shift 96
-	tEGAL  reduce 70
-	tSOU  reduce 70
-	tADD  reduce 70
-	tPF  reduce 70
-	tV  reduce 70
-	tFI  reduce 70
-	tINF  reduce 70
-	tSUP  reduce 70
-
-
-state 113
-	Calcul : Calcul tADD DivMul .  (69)
-	DivMul : DivMul . tMUL Terme  (72)
-	DivMul : DivMul . tDIV Terme  (73)
+	Calcul : Calcul tSOU DivMul .  (69)
+	DivMul : DivMul . tMUL Terme  (71)
+	DivMul : DivMul . tDIV Terme  (72)
 
 	tMUL  shift 95
 	tDIV  shift 96
@@ -1306,10 +1287,27 @@ state 113
 	tSUP  reduce 69
 
 
+state 113
+	Calcul : Calcul tADD DivMul .  (68)
+	DivMul : DivMul . tMUL Terme  (71)
+	DivMul : DivMul . tDIV Terme  (72)
+
+	tMUL  shift 95
+	tDIV  shift 96
+	tEGAL  reduce 68
+	tSOU  reduce 68
+	tADD  reduce 68
+	tPF  reduce 68
+	tV  reduce 68
+	tFI  reduce 68
+	tINF  reduce 68
+	tSUP  reduce 68
+
+
 state 114
 	Conditions : Calcul tINF Calcul .  (50)
-	Calcul : Calcul . tADD DivMul  (69)
-	Calcul : Calcul . tSOU DivMul  (70)
+	Calcul : Calcul . tADD DivMul  (68)
+	Calcul : Calcul . tSOU DivMul  (69)
 
 	tSOU  shift 91
 	tADD  shift 92
@@ -1318,8 +1316,8 @@ state 114
 
 state 115
 	Conditions : Calcul tSUP Calcul .  (51)
-	Calcul : Calcul . tADD DivMul  (69)
-	Calcul : Calcul . tSOU DivMul  (70)
+	Calcul : Calcul . tADD DivMul  (68)
+	Calcul : Calcul . tSOU DivMul  (69)
 
 	tSOU  shift 91
 	tADD  shift 92
@@ -1327,15 +1325,15 @@ state 115
 
 
 state 116
-	DivMul : DivMul tMUL Terme .  (72)
+	DivMul : DivMul tMUL Terme .  (71)
 
-	.  reduce 72
+	.  reduce 71
 
 
 state 117
-	DivMul : DivMul tDIV Terme .  (73)
+	DivMul : DivMul tDIV Terme .  (72)
 
-	.  reduce 73
+	.  reduce 72
 
 
 state 118
@@ -1346,7 +1344,7 @@ state 118
 
 
 state 119
-	BrancheWhile : tWHILE tPO Conditions tPF $$20 . tAO Body tAF  (61)
+	BrancheWhile : tWHILE tPO Conditions tPF $$20 . tAO Body tAF  (60)
 
 	tAO  shift 130
 	.  error
@@ -1375,8 +1373,8 @@ state 121
 
 state 122
 	Initialisation : tINT tID $$13 tEGAL Calcul . $$14 FinInitialisation  (43)
-	Calcul : Calcul . tADD DivMul  (69)
-	Calcul : Calcul . tSOU DivMul  (70)
+	Calcul : Calcul . tADD DivMul  (68)
+	Calcul : Calcul . tSOU DivMul  (69)
 	$$14 : .  (42)
 
 	tSOU  shift 91
@@ -1388,7 +1386,7 @@ state 122
 
 
 state 123
-	ListeArguments : Calcul tV $$21 . ListeArguments  (68)
+	ListeArguments : Calcul tV $$21 . ListeArguments  (67)
 
 	tPO  shift 65
 	tNB  shift 66
@@ -1434,8 +1432,8 @@ state 127
 
 state 128
 	Conditions : Calcul tEGAL tEGAL Calcul .  (49)
-	Calcul : Calcul . tADD DivMul  (69)
-	Calcul : Calcul . tSOU DivMul  (70)
+	Calcul : Calcul . tADD DivMul  (68)
+	Calcul : Calcul . tSOU DivMul  (69)
 
 	tSOU  shift 91
 	tADD  shift 92
@@ -1464,7 +1462,7 @@ state 129
 
 
 state 130
-	BrancheWhile : tWHILE tPO Conditions tPF $$20 tAO . Body tAF  (61)
+	BrancheWhile : tWHILE tPO Conditions tPF $$20 tAO . Body tAF  (60)
 	Body : .  (23)
 
 	tPRINTF  shift 25
@@ -1515,9 +1513,9 @@ state 134
 
 
 state 135
-	ListeArguments : Calcul tV $$21 ListeArguments .  (68)
+	ListeArguments : Calcul tV $$21 ListeArguments .  (67)
 
-	.  reduce 68
+	.  reduce 67
 
 
 state 136
@@ -1542,7 +1540,7 @@ state 138
 
 
 state 139
-	BrancheWhile : tWHILE tPO Conditions tPF $$20 tAO Body . tAF  (61)
+	BrancheWhile : tWHILE tPO Conditions tPF $$20 tAO Body . tAF  (60)
 
 	tAF  shift 148
 	.  error
@@ -1606,24 +1604,24 @@ state 146
 
 state 147
 	BrancheIf : tIF tPO Conditions tPF $$15 tAO Body tAF . BranchesElseif  (48)
-	BranchesElseif : .  (53)
+	BranchesElseif : .  (52)
 
 	tELSE  shift 152
-	tAF  reduce 53
-	tPRINTF  reduce 53
-	tRETURN  reduce 53
-	tIF  reduce 53
-	tWHILE  reduce 53
-	tINT  reduce 53
-	tID  reduce 53
+	tAF  reduce 52
+	tPRINTF  reduce 52
+	tRETURN  reduce 52
+	tIF  reduce 52
+	tWHILE  reduce 52
+	tINT  reduce 52
+	tID  reduce 52
 
 	BranchesElseif  goto 153
 
 
 state 148
-	BrancheWhile : tWHILE tPO Conditions tPF $$20 tAO Body tAF .  (61)
+	BrancheWhile : tWHILE tPO Conditions tPF $$20 tAO Body tAF .  (60)
 
-	.  reduce 61
+	.  reduce 60
 
 
 state 149
@@ -1634,8 +1632,8 @@ state 149
 
 state 150
 	MultDeclaInit : tID $$9 tEGAL Calcul . $$10 FinInitialisation  (36)
-	Calcul : Calcul . tADD DivMul  (69)
-	Calcul : Calcul . tSOU DivMul  (70)
+	Calcul : Calcul . tADD DivMul  (68)
+	Calcul : Calcul . tSOU DivMul  (69)
 	$$10 : .  (35)
 
 	tSOU  shift 91
@@ -1653,12 +1651,12 @@ state 151
 
 
 state 152
-	BranchesElseif : tELSE . tIF $$16 tPO Conditions tPF $$17 tAO Body tAF $$18 BranchesElseif  (57)
-	BranchesElseif : tELSE . $$19 tAO Body tAF  (59)
-	$$19 : .  (58)
+	BranchesElseif : tELSE . tIF $$16 tPO Conditions tPF $$17 tAO Body tAF $$18 BranchesElseif  (56)
+	BranchesElseif : tELSE . $$19 tAO Body tAF  (58)
+	$$19 : .  (57)
 
 	tIF  shift 155
-	tAO  reduce 58
+	tAO  reduce 57
 
 	$$19  goto 156
 
@@ -1680,16 +1678,16 @@ state 154
 
 
 state 155
-	BranchesElseif : tELSE tIF . $$16 tPO Conditions tPF $$17 tAO Body tAF $$18 BranchesElseif  (57)
-	$$16 : .  (54)
+	BranchesElseif : tELSE tIF . $$16 tPO Conditions tPF $$17 tAO Body tAF $$18 BranchesElseif  (56)
+	$$16 : .  (53)
 
-	.  reduce 54
+	.  reduce 53
 
 	$$16  goto 158
 
 
 state 156
-	BranchesElseif : tELSE $$19 . tAO Body tAF  (59)
+	BranchesElseif : tELSE $$19 . tAO Body tAF  (58)
 
 	tAO  shift 159
 	.  error
@@ -1702,14 +1700,14 @@ state 157
 
 
 state 158
-	BranchesElseif : tELSE tIF $$16 . tPO Conditions tPF $$17 tAO Body tAF $$18 BranchesElseif  (57)
+	BranchesElseif : tELSE tIF $$16 . tPO Conditions tPF $$17 tAO Body tAF $$18 BranchesElseif  (56)
 
 	tPO  shift 160
 	.  error
 
 
 state 159
-	BranchesElseif : tELSE $$19 tAO . Body tAF  (59)
+	BranchesElseif : tELSE $$19 tAO . Body tAF  (58)
 	Body : .  (23)
 
 	tPRINTF  shift 25
@@ -1730,7 +1728,7 @@ state 159
 
 
 state 160
-	BranchesElseif : tELSE tIF $$16 tPO . Conditions tPF $$17 tAO Body tAF $$18 BranchesElseif  (57)
+	BranchesElseif : tELSE tIF $$16 tPO . Conditions tPF $$17 tAO Body tAF $$18 BranchesElseif  (56)
 
 	tPO  shift 65
 	tNB  shift 66
@@ -1745,43 +1743,43 @@ state 160
 
 
 state 161
-	BranchesElseif : tELSE $$19 tAO Body . tAF  (59)
+	BranchesElseif : tELSE $$19 tAO Body . tAF  (58)
 
 	tAF  shift 163
 	.  error
 
 
 state 162
-	BranchesElseif : tELSE tIF $$16 tPO Conditions . tPF $$17 tAO Body tAF $$18 BranchesElseif  (57)
+	BranchesElseif : tELSE tIF $$16 tPO Conditions . tPF $$17 tAO Body tAF $$18 BranchesElseif  (56)
 
 	tPF  shift 164
 	.  error
 
 
 state 163
-	BranchesElseif : tELSE $$19 tAO Body tAF .  (59)
+	BranchesElseif : tELSE $$19 tAO Body tAF .  (58)
 
-	.  reduce 59
+	.  reduce 58
 
 
 state 164
-	BranchesElseif : tELSE tIF $$16 tPO Conditions tPF . $$17 tAO Body tAF $$18 BranchesElseif  (57)
-	$$17 : .  (55)
+	BranchesElseif : tELSE tIF $$16 tPO Conditions tPF . $$17 tAO Body tAF $$18 BranchesElseif  (56)
+	$$17 : .  (54)
 
-	.  reduce 55
+	.  reduce 54
 
 	$$17  goto 165
 
 
 state 165
-	BranchesElseif : tELSE tIF $$16 tPO Conditions tPF $$17 . tAO Body tAF $$18 BranchesElseif  (57)
+	BranchesElseif : tELSE tIF $$16 tPO Conditions tPF $$17 . tAO Body tAF $$18 BranchesElseif  (56)
 
 	tAO  shift 166
 	.  error
 
 
 state 166
-	BranchesElseif : tELSE tIF $$16 tPO Conditions tPF $$17 tAO . Body tAF $$18 BranchesElseif  (57)
+	BranchesElseif : tELSE tIF $$16 tPO Conditions tPF $$17 tAO . Body tAF $$18 BranchesElseif  (56)
 	Body : .  (23)
 
 	tPRINTF  shift 25
@@ -1802,45 +1800,45 @@ state 166
 
 
 state 167
-	BranchesElseif : tELSE tIF $$16 tPO Conditions tPF $$17 tAO Body . tAF $$18 BranchesElseif  (57)
+	BranchesElseif : tELSE tIF $$16 tPO Conditions tPF $$17 tAO Body . tAF $$18 BranchesElseif  (56)
 
 	tAF  shift 168
 	.  error
 
 
 state 168
-	BranchesElseif : tELSE tIF $$16 tPO Conditions tPF $$17 tAO Body tAF . $$18 BranchesElseif  (57)
-	$$18 : .  (56)
+	BranchesElseif : tELSE tIF $$16 tPO Conditions tPF $$17 tAO Body tAF . $$18 BranchesElseif  (56)
+	$$18 : .  (55)
 
-	.  reduce 56
+	.  reduce 55
 
 	$$18  goto 169
 
 
 state 169
-	BranchesElseif : tELSE tIF $$16 tPO Conditions tPF $$17 tAO Body tAF $$18 . BranchesElseif  (57)
-	BranchesElseif : .  (53)
+	BranchesElseif : tELSE tIF $$16 tPO Conditions tPF $$17 tAO Body tAF $$18 . BranchesElseif  (56)
+	BranchesElseif : .  (52)
 
 	tELSE  shift 152
-	tAF  reduce 53
-	tPRINTF  reduce 53
-	tRETURN  reduce 53
-	tIF  reduce 53
-	tWHILE  reduce 53
-	tINT  reduce 53
-	tID  reduce 53
+	tAF  reduce 52
+	tPRINTF  reduce 52
+	tRETURN  reduce 52
+	tIF  reduce 52
+	tWHILE  reduce 52
+	tINT  reduce 52
+	tID  reduce 52
 
 	BranchesElseif  goto 170
 
 
 state 170
-	BranchesElseif : tELSE tIF $$16 tPO Conditions tPF $$17 tAO Body tAF $$18 BranchesElseif .  (57)
+	BranchesElseif : tELSE tIF $$16 tPO Conditions tPF $$17 tAO Body tAF $$18 BranchesElseif .  (56)
 
-	.  reduce 57
+	.  reduce 56
 
 
-28 terminals, 46 nonterminals
-79 grammar rules, 171 states
+26 terminals, 46 nonterminals
+78 grammar rules, 171 states
 
 grammar parser grammar
 symbol# value# symbol
@@ -1860,61 +1858,59 @@ symbol# value# symbol
     13    268  tV
     14    269  tFI
     15    270  tPRINTF
-    16    271  tERROR
-    17    272  tRETURN
-    18    273  tINF
-    19    274  tSUP
-    20    275  tG
-    21    276  tNB
-    22    277  tIF
-    23    278  tELSE
-    24    279  tWHILE
-    25    280  tVOID
-    26    281  tINT
-    27    282  tID
-    28    283  $accept
-    29    284  Programme
-    30    285  Calcul
-    31    286  DivMul
-    32    287  Terme
-    33    288  AppelFonction
-    34    289  Fonctions
-    35    290  Main
-    36    291  Fonction
-    37    292  $$1
-    38    293  ArgumentsDeclaration
-    39    294  BodyRet
-    40    295  $$2
-    41    296  $$3
-    42    297  $$4
-    43    298  Body
-    44    299  $$5
-    45    300  $$6
-    46    301  ListeArgumentsDeclaration
-    47    302  $$7
-    48    303  Declaration
-    49    304  Initialisation
-    50    305  Affectation
-    51    306  BrancheIf
-    52    307  BrancheWhile
-    53    308  Printf
-    54    309  MultDeclaInit
-    55    310  $$8
-    56    311  $$9
-    57    312  FinInitialisation
-    58    313  $$10
-    59    314  $$11
-    60    315  $$12
-    61    316  $$13
-    62    317  $$14
-    63    318  Conditions
-    64    319  $$15
-    65    320  BranchesElseif
-    66    321  $$16
-    67    322  $$17
-    68    323  $$18
-    69    324  $$19
-    70    325  $$20
-    71    326  Arguments
-    72    327  ListeArguments
-    73    328  $$21
+    16    271  tRETURN
+    17    272  tINF
+    18    273  tSUP
+    19    274  tNB
+    20    275  tIF
+    21    276  tELSE
+    22    277  tWHILE
+    23    278  tVOID
+    24    279  tINT
+    25    280  tID
+    26    281  $accept
+    27    282  Programme
+    28    283  Calcul
+    29    284  DivMul
+    30    285  Terme
+    31    286  AppelFonction
+    32    287  Fonctions
+    33    288  Main
+    34    289  Fonction
+    35    290  $$1
+    36    291  ArgumentsDeclaration
+    37    292  BodyRet
+    38    293  $$2
+    39    294  $$3
+    40    295  $$4
+    41    296  Body
+    42    297  $$5
+    43    298  $$6
+    44    299  ListeArgumentsDeclaration
+    45    300  $$7
+    46    301  Declaration
+    47    302  Initialisation
+    48    303  Affectation
+    49    304  BrancheIf
+    50    305  BrancheWhile
+    51    306  Printf
+    52    307  MultDeclaInit
+    53    308  $$8
+    54    309  $$9
+    55    310  FinInitialisation
+    56    311  $$10
+    57    312  $$11
+    58    313  $$12
+    59    314  $$13
+    60    315  $$14
+    61    316  Conditions
+    62    317  $$15
+    63    318  BranchesElseif
+    64    319  $$16
+    65    320  $$17
+    66    321  $$18
+    67    322  $$19
+    68    323  $$20
+    69    324  Arguments
+    70    325  ListeArguments
+    71    326  $$21

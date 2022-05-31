@@ -63,12 +63,12 @@ int get_nb_instructions(){
     return TI.nb_instructions;
 }
 
-void patchJMF(int ligne_jump){
-    TI.ti[TI.num_instru_JMF].operand1 = ligne_jump;
+void patchJMF(int numero_instru, int ligne_jump){
+    TI.ti[numero_instru - 1].operand1 = ligne_jump;
 }
 
-void patchJMP(int ligne_jump){
-    TI.ti[TI.num_instru_JMP].addr = ligne_jump;    
+void patchJMP(int numero_instru, int ligne_jump){
+    TI.ti[numero_instru - 1].addr = ligne_jump;    
 }
 
 void patchJMP_fonction(int numero_instru, int ligne_jump){
@@ -78,12 +78,3 @@ void patchJMP_fonction(int numero_instru, int ligne_jump){
 TableInstruction get_TI() {
     return TI;
 }
-
-/* int main() {
-    InitTI();
-    Add_instruction4(ADD, 0, 1, 2);
-    Add_instruction4(ADD, 1, 2, 3);
-    Instruction test = Pop_instruction();
-    Print_ti();
-    return 0;
-} */

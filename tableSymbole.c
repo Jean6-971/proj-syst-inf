@@ -114,12 +114,3 @@ void set_TS_normal_mode(){
     TS.nb_symboles -= 500;
 }
 
-/* int main() {
-    InitTS();
-    Add_symb("abc", "int", 0);
-    Inc_depth();
-    Add_symb("ab", "int", 1);
-    Set_init_symbole("abc");
-    Print_ts();
-    return 0;
-} */
