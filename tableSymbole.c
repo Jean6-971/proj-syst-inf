@@ -106,6 +106,14 @@ int Set_init_symbole(char * id) {
     return -1;
 }
 
+void set_TS_func_mode(){
+    TS.nb_symboles += 500;
+}
+
+void set_TS_normal_mode(){
+    TS.nb_symboles -= 500;
+}
+
 /* int main() {
     InitTS();
     Add_symb("abc", "int", 0);

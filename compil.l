@@ -29,7 +29,6 @@ void { return tVOID;}
 	  strcpy(yylval.var, yytext);
 	  return tID;
 	}
-"\"" { return tG; }
 "{"	{ return tAO; }
 "}"	{ return tAF; }
 "="	{ return tEGAL; }
@@ -45,9 +44,5 @@ void { return tVOID;}
 
 ";" { return tFI;}
 
-
-.	{printf("%x!!!!!!!!!!!!!!!!!!!\n",yytext[0]); return tERROR; }
 %%
 
-
-/* \n	{ return tFL; } */

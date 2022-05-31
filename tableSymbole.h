@@ -41,3 +41,9 @@ int Get_addr_second();
 void free_temp_top();
 
 void Add_symb_func(char * id, int addr, char * type, bool init);
+
+void set_TS_func_mode();
+
+void set_TS_normal_mode();
+
+
